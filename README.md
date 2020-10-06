@@ -1,7 +1,8 @@
-# taller-de-programacion-1-veiga-contador-de-palabras
+# Trabajo Práctico 1 - Taller de Programación - Contador de Palabras
 
 Alumno: Robinson Fang
 Padrón: 97009
+Repositorio: https://github.com/fangrobinson/taller-de-programacion-1-veiga-contador-de-palabras
 
 ## Entorno de trabajo
 
