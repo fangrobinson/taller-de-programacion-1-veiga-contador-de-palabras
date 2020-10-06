@@ -57,7 +57,7 @@ proceso1 | proceso2 | proceso3
 
 Se realizó un programa simple que imprime por pantalla el mensaje “Hola Mundo”.
 
-![image](taller-de-programacion-1-veiga-contador-de-palabras/img/paso0.png)
+![image](img/paso0.png)
 
 ## Paso 1: SERCOM - Errores de generación y normas de programación
 
