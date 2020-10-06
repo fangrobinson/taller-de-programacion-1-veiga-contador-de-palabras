@@ -141,6 +141,8 @@ Se incluyeron los módulos utilizados.
 
 ### Errores encontrados
 
+![Errores de compilación](img/paso3.PNG)
+
 Aunque esta vez se pudieron generar los códigos objeto de los procesos, hubo una falla en el momento de link, ya que aunque el archivo main.c tiene una referencia a 'wordscounter_destroy', esta no fue implementada. Cuando se compilan los archivos por separado esto puede no representar un error si es definida luego, cosa que no ocurre en este caso.
 
 ## Paso 4: SERCOM - Memory Leaks y Buffer Overflows
@@ -151,6 +153,10 @@ Se implementó una función 'wordscounter_destroy' rudimentaria que no hace nada
 
 ### Errores encontrados
 
+#### Caso TDA
+
+![Ejecución con Valgrind](img/paso4-tda.PNG)
+
 Para las pruebas 'tda':
 > - 472 bytes in 1 blocks are still reachable in loss record 1 of 2
 > - 1,505 bytes in 215 blocks are definitely lost in loss record 2 of 2
@@ -158,7 +164,11 @@ Para las pruebas 'tda':
 472 bytes no fueron liberados al finalizar la ejecución del programa y aún se conservan referencias a estos. 
 1505 bytes se perdieron ya que al finalizar el programa no fueron liberados y no se conservan referencias a estos, por lo que no podrían liberarse.
 
-Para las pruebas 'long_filename' 	el programa cortó su ejecución ya que se encontró con un buffer overflow.
+#### Caso Long Filename
+
+![Ejecución con Valgrind](img/paso4-long-filename.PNG)
+
+Para las pruebas 'long_filename' 	el programa cortó su ejecución ya que se encontró con un buffer overflow. Usando strcpy se evitaría el problema de buffer overflow, pero de igual manera la ejecución del programa habría encontrado un error al no hallar el archivo. 
 
 Un segmentation fault ocurre cuando se intenta acceder a un bloque de memoria para el cual no se tiene permiso.
 Buffer overflow es la escritura de datos en bloques de memoria adyacentes al destino original debido a una falta de chequeo de los límites correctos. 
@@ -178,6 +188,8 @@ Para el caso de archivo inválido se retorna -1 asociado al código de ERROR que
 
 #### Caso  Single Word
 
+![Hexdump](img/hexdump.PNG)
+
 El último caracter del archivo input_single_word.txt, '64' en hex, es la letra 'd'. 
 El error se debe al manejo de estados que suman uno a la cantidad de palabras.  Ya que al encontrarse el fin del archivo se debe sumar uno si anteriormente se encontraba procesando una palabra. 
 
@@ -185,6 +197,9 @@ El error se debe al manejo de estados que suman uno a la cantidad de palabras.  
 ### Debugging
 
 Se realizó depuración con gdb verificando la salida de los siguientes comandos:
+
+![1 - Debugging con gdb](img/gdb1.PNG)
+![2 - Debugging con gdb](img/gdb2.PNG)
 
 - info functions 
 	> Detalla funciones y símbolos del programa
