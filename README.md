@@ -221,5 +221,12 @@ En este caso luego de procesar la letra d, termina de procesar el archivo y devu
 
 #### Cambios respecto a la versión anterior: 
 
-DELIM_WORDS es ahora una constante del módulo en lugar de una variable de solo lectura que se define al llamarse la función. Se corrigió el manejo de estados que no permitía contabilizar palabras al final del archivo de texto a utilizar. Por último se corrigió el valor de retorno para una ejecución errónea de -1 a 1.
+DELIM_WORDS es ahora una constante del módulo en lugar de una variable de solo lectura que se define al llamarse la función. 
 
+Se corrigió el manejo de estados que no permitía contabilizar palabras al final del archivo de texto a utilizar. 
+
+Por último se corrigió el valor de retorno para una ejecución errónea de -1 a 1.
+
+![Historia de submits al sistema INGInious](img/submission-history.PNG)
+
+![Salida del programa final](img/paso6-ejecuciones.PNG)
