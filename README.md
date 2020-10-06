@@ -57,9 +57,84 @@ proceso1 | proceso2 | proceso3
 
 Se realizó un programa simple que imprime por pantalla el mensaje “Hola Mundo”.
 
-![image](./img/paso0.png)
-[texto](./img/paso0.png)
-(text)[./img/paso0.png]
+![Resultado de la ejecución](./img/paso0.png)
 
 ## Paso 1: SERCOM - Errores de generación y normas de programación
+
+### Errores de estilo
+
+####  paso1_wordscounter.c
+
+> - línea 27: no se respeta el espacio previo a la cláusula while.
+> - línea 41: espacios extras dentro de los paréntesis de la cláusula if.
+> - línea 47: la cláusula else debe estar pegada a la llave de cierre '}' de la línea anterior.
+> - línea 48: no se respeta el espacio previo a la cláusula if.
+> - línea 53: el espacio previo al ';' es innecesario.
+
+####  paso1_wordscounter.h
+
+> - línea 5: se excede el largo máximo para una línea (80 caracteres).
+
+####  paso1_main.c
+
+> - línea 12: se prefiere el uso de snprintf a strcpy.
+> - línea 15: la cláusula else debe estar pegada a la llave de cierre '}' de la línea anterior.
+
+### Errores de compilación/linkedición
+
+####  paso1_main.c
+
+> - paso1_main.c:22:9: error: unknown type name ‘wordscounter_t’
+> - paso1_main.c:23:9: error: implicit declaration of function ‘wordscounter_create’ 
+> - paso1_main.c:24:9: error: implicit declaration of function ‘wordscounter_process’ 
+> - paso1_main.c:25:24: error: implicit declaration of function ‘wordscounter_get_words’
+> - paso1_main.c:27:9: error: implicit declaration of function ‘wordscounter_destroy’
+
+El archivo paso1_main.c está haciendo referencias a estructuras y funciones de módulos no importados. Esto produce errores de compilación por lo que no se genera código objeto.
+
+El sistema no reportó warnings porque está utilizando el flag *Werror* que transforma warnings en errores. 
+
+## Paso 2: SERCOM - Errores de generación 2
+
+Se realizaron las correcciones de estilo necesarias para respetar la normativa de codificación CPPLINT, como así también se realizó el siguiente cambio en el main.c:
+```
+<         strcpy(filepath, argv[1]);
+>         memcpy(filepath, argv[1], strlen(argv[1]) + 1);
+```
+La funcionalidad entre ambas operaciones es distinta: strcpy se detiene frente a un byte nulo ('\0'), mientras que memcpy requiere como parámetro el largo. 
+
+> - paso2_wordscounter.h:7:5: error: unknown type name ‘size_t’
+> - paso2_wordscounter.h:20:1: error: unknown type name ‘size_t’
+> - paso2_wordscounter.h:25:49: error: unknown type name ‘FILE’
+> - paso2_wordscounter.c:17:8: error: conflicting types for ‘wordscounter_get_words’
+> - paso2_wordscounter.c:30:25: error: implicit declaration of function ‘malloc’
+> - paso2_wordscounter.c:30:25: error: incompatible implicit declaration of built-in function ‘malloc’ 
+
+Se utiliza el tipo de datos 'size_t' definido en el módulo stddef.h (que puede importarse directamente con stdlib.h) sin incluirlo.  Lo mismo ocurre con el tipo 'FILE' y stdio.h. Por su parte, malloc requiere la inclusión de stdlib.h.
+
+Todos los errores son de compilación.
+
+## Paso 3: SERCOM - Errores de generación 3
+
+Se incluyeron los módulos utilizados.
+
+Aunque esta vez se pudieron generar los códigos objeto de los procesos, hubo una falla en el momento de link, ya que aunque el archivo main.c tiene una referencia a `wordscounter_destroy', esta no fue implementada. Cuando se compilan los archivos por separado esto puede no representar un error si es definida luego, cosa que no ocurre en este caso.
+
+## Paso 4: SERCOM - Memory Leaks y Buffer Overflows
+
+Se implementó una función 'wordscounter_destroy' rudimentaria que no hace nada. 
+
+Para las pruebas 'tda':
+> - 472 bytes in 1 blocks are still reachable in loss record 1 of 2
+> - 1,505 bytes in 215 blocks are definitely lost in loss record 2 of 2
+
+472 bytes no fueron liberados al finalizar la ejecución del programa y aún se conservan referencias a estos. 
+1505 bytes se perdieron ya que al finalizar el programa no fueron liberados y no se conservan referencias a estos, por lo que no podrían liberarse.
+
+Para las pruebas 'long_filename' el programa cortó su ejecución ya que se encontró con un buffer overflow.
+
+Un segmentation fault ocurre cuando se intenta acceder a un bloque de memoria para el cual no se tiene permiso.
+Buffer overflow es la escritura de datos en bloques de memoria adyacentes al destino original debido a una falta de chequeo de los límites correctos. 
+
+## Paso 5: SERCOM - Código de retorno y salida estándar
 
