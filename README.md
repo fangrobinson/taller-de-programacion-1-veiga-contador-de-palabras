@@ -1,7 +1,9 @@
 # Trabajo Práctico 1 - Taller de Programación - Contador de Palabras
 
 Alumno: Robinson Fang
+
 Padrón: 97009
+
 Repositorio: https://github.com/fangrobinson/taller-de-programacion-1-veiga-contador-de-palabras
 
 ## Entorno de trabajo
@@ -58,7 +60,9 @@ proceso1 | proceso2 | proceso3
 
 Se realizó un programa simple que imprime por pantalla el mensaje “Hola Mundo”.
 
-![Resultado de la ejecución](./img/paso0.png)
+![Resultado de la ejecución](img/paso0.png)
+![Resultado de la ejecución](img/paso0.PNG)
+![Resultado de la ejecución](img/paso0.jpg)
 
 ## Paso 1: SERCOM - Errores de generación y normas de programación
 
@@ -127,7 +131,7 @@ Se incluyeron los módulos utilizados.
 
 ### Errores encontrados
 
-Aunque esta vez se pudieron generar los códigos objeto de los procesos, hubo una falla en el momento de link, ya que aunque el archivo main.c tiene una referencia a `wordscounter_destroy', esta no fue implementada. Cuando se compilan los archivos por separado esto puede no representar un error si es definida luego, cosa que no ocurre en este caso.
+Aunque esta vez se pudieron generar los códigos objeto de los procesos, hubo una falla en el momento de link, ya que aunque el archivo main.c tiene una referencia a 'wordscounter_destroy', esta no fue implementada. Cuando se compilan los archivos por separado esto puede no representar un error si es definida luego, cosa que no ocurre en este caso.
 
 ## Paso 4: SERCOM - Memory Leaks y Buffer Overflows
 
