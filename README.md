@@ -96,12 +96,16 @@ El sistema no reportó warnings porque está utilizando el flag *Werror* que tra
 
 ## Paso 2: SERCOM - Errores de generación 2
 
+#### Cambios respecto a la versión anterior: 
+
 Se realizaron las correcciones de estilo necesarias para respetar la normativa de codificación CPPLINT, como así también se realizó el siguiente cambio en el main.c:
 ```
 <         strcpy(filepath, argv[1]);
 >         memcpy(filepath, argv[1], strlen(argv[1]) + 1);
 ```
 La funcionalidad entre ambas operaciones es distinta: strcpy se detiene frente a un byte nulo ('\0'), mientras que memcpy requiere como parámetro el largo. 
+
+### Errores encontrados
 
 > - paso2_wordscounter.h:7:5: error: unknown type name ‘size_t’
 > - paso2_wordscounter.h:20:1: error: unknown type name ‘size_t’
@@ -116,13 +120,21 @@ Todos los errores son de compilación.
 
 ## Paso 3: SERCOM - Errores de generación 3
 
+#### Cambios respecto a la versión anterior: 
+
 Se incluyeron los módulos utilizados.
+
+### Errores encontrados
 
 Aunque esta vez se pudieron generar los códigos objeto de los procesos, hubo una falla en el momento de link, ya que aunque el archivo main.c tiene una referencia a `wordscounter_destroy', esta no fue implementada. Cuando se compilan los archivos por separado esto puede no representar un error si es definida luego, cosa que no ocurre en este caso.
 
 ## Paso 4: SERCOM - Memory Leaks y Buffer Overflows
 
+#### Cambios respecto a la versión anterior: 
+
 Se implementó una función 'wordscounter_destroy' rudimentaria que no hace nada. 
+
+### Errores encontrados
 
 Para las pruebas 'tda':
 > - 472 bytes in 1 blocks are still reachable in loss record 1 of 2
@@ -131,10 +143,53 @@ Para las pruebas 'tda':
 472 bytes no fueron liberados al finalizar la ejecución del programa y aún se conservan referencias a estos. 
 1505 bytes se perdieron ya que al finalizar el programa no fueron liberados y no se conservan referencias a estos, por lo que no podrían liberarse.
 
-Para las pruebas 'long_filename' el programa cortó su ejecución ya que se encontró con un buffer overflow.
+Para las pruebas 'long_filename' 	el programa cortó su ejecución ya que se encontró con un buffer overflow.
 
 Un segmentation fault ocurre cuando se intenta acceder a un bloque de memoria para el cual no se tiene permiso.
 Buffer overflow es la escritura de datos en bloques de memoria adyacentes al destino original debido a una falta de chequeo de los límites correctos. 
 
 ## Paso 5: SERCOM - Código de retorno y salida estándar
+
+#### Cambios respecto a la versión anterior: 
+
+El filepath del archivo a utilizar se recibe por línea de comando al llamarse el programa, pero no se copia a en una cadena de 30 caracteres, lo que permite evitar el overflow que se estaba generando antes.
+El array de caracteres delim_words ahora se define como una cadena (respetando el '\0') y no byte a byte.
+
+### Errores encontrados
+
+#### Caso  Invalid File
+
+Para el caso de archivo inválido se retorna -1 asociado al código de ERROR que devuelve el programa y este se lee como entero sin signo 255 de acuerdo a lo esperado por el retorno de un programa main. 
+
+#### Caso  Single Word
+
+El último caracter del archivo input_single_word.txt, '64' en hex, es la letra 'd'. 
+El error se debe al manejo de estados que suman uno a la cantidad de palabras.  Ya que al encontrarse el fin del archivo se debe sumar uno si anteriormente se encontraba procesando una palabra. 
+
+
+### Debugging
+
+Se realizó depuración con gdb verificando la salida de los siguientes comandos:
+
+- info functions 
+	> Detalla funciones y símbolos del programa
+- list wordscounter_next_state 
+	> Muestra por pantalla las líneas de código asociadas a la función pedida indicando número de línea.
+
+- list 
+	> imprime más líneas
+
+- break 45 
+	> inserta un breakpoint para examinar el estado de ejecución de un programa en la línea 45.
+
+- run input_single_word.txt
+	> ejecuta el programa con 'input_single_word.txt' como argumento.
+
+En este caso luego de procesar la letra d, termina de procesar el archivo y devuelve 0, ya que no se sumó 1 asociado a la palabra 'word'. El programa nunca se detiene en el breakpoint porque el pasa de la letra d con estado IN WORD a fin del archivo, por lo que no pasaría nunca por la condiciones que llevan al breakpoint generado en la línea 45.
+
+## Paso 6: SERCOM - Entrega exitosa
+
+#### Cambios respecto a la versión anterior: 
+
+DELIM_WORDS es ahora una constante del módulo en lugar de una variable de solo lectura que se define al llamarse la función. Se corrigió el manejo de estados que no permitía contabilizar palabras al final del archivo de texto a utilizar. Por último se corrigió el valor de retorno para una ejecución errónea de -1 a 1.
 
