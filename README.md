@@ -88,7 +88,7 @@ Se realizó un programa simple que imprime por pantalla el mensaje “Hola Mundo
 
 ### Errores de compilación/linkedición
 
-![Errores de estilo](img/paso1-a.PNG)
+![Errores de compilación](img/paso1-a.PNG)
 
 ####  paso1_main.c
 
@@ -114,6 +114,13 @@ Se realizaron las correcciones de estilo necesarias para respetar la normativa d
 La funcionalidad entre ambas operaciones es distinta: strcpy se detiene frente a un byte nulo ('\0'), mientras que memcpy requiere como parámetro el largo. 
 
 ### Errores encontrados
+
+
+![Errores de estilo](img/paso2-b.PNG)
+
+No se encontraron errores de estilo.
+
+![Errores de compilación](img/paso2-a.PNG)
 
 > - paso2_wordscounter.h:7:5: error: unknown type name ‘size_t’
 > - paso2_wordscounter.h:20:1: error: unknown type name ‘size_t’
