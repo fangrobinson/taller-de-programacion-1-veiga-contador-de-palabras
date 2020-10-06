@@ -3,7 +3,9 @@
 Alumno: Robinson Fang
 Padrón: 97009
 
-# Valgrind
+## Entorno de trabajo
+
+### Valgrind
 
 Valgrind es una herramienta de análisis que facilita la depuración de un programa. Permite encontrar memoria que se reservó y luego de ser utilizada no es liberada, lecturas/escrituras en memoria liberada o fuera de los límites reservados.
 
@@ -22,7 +24,7 @@ Entre sus opciones más comunes se encuentran:
 	> habilita/deshabilita la detección de memoria de la que no se conservan referencias
 
 
-# sizeof()
+### sizeof()
 
 sizeof() devuelve el tamaño en bytes que ocupa en memoria un tipo de datos o estructura.
 
@@ -37,7 +39,7 @@ struct char_and_int {
 ```
 Aunque el tipo de dato char ocupe un byte, se utilizará un bloque de 4 para almacenarlo. El tamaño de la struct es de 8 bytes.
 
-# STDIN, STDOUT y STDERR
+### STDIN, STDOUT y STDERR
 
 - STDIN (entrada estándar) son los datos que recibe para su ejecución.
 - STDOUT (salida estándar) son los datos que devuelve un programa luego de su ejecución.
@@ -50,3 +52,12 @@ Se puede alimentar la entrada de un proceso con la salida secuencialmente y de f
 ```
 proceso1 | proceso2 | proceso3
 ```
+
+## Paso 0:
+
+Se realizó un programa simple que imprime por pantalla el mensaje “Hola Mundo”.
+
+![image](/img/paso0.png)
+
+## Paso 1: SERCOM - Errores de generación y normas de programación
+
