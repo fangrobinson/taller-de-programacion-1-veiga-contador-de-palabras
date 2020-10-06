@@ -59,6 +59,7 @@ Se realizó un programa simple que imprime por pantalla el mensaje “Hola Mundo
 
 ![image](./img/paso0.png)
 [texto](./img/paso0.png)
+(text)[./img/paso0.png]
 
 ## Paso 1: SERCOM - Errores de generación y normas de programación
 
