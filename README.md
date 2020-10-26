@@ -34,6 +34,8 @@ sizeof() devuelve el tamaño en bytes que ocupa en memoria un tipo de datos o es
 
 El sizeof(char) es siempre 1 byte independientemente de la arquitectura del computador utilizado. Pero para el tipo de dato entero, el tamaño que ocupa en memoria puede variar según la arquitectura o el computador. Para una arquitectura de 32 o 64 bits, por ejemplo, el tamaño de un entero es de 4 bytes.
 
+**En una maquina de 64 bits, el tamaño del entero PUEDE o NO ser de 4 bytes, depende del compilador.**
+
 No necesariamente el sizeof() de una struct de C es igual a la suma del sizeof() de cada uno sus elementos. Esto se debe a que por una cuestión de performance a la hora de acceder a memoria, los datos se alinean de forma tal que el acceso a memoria sea de a bloques múltiplos de 4 bytes. Es por esto que si se tiene la siguiente estructura:
 ```
 struct char_and_int {
@@ -163,15 +165,18 @@ Para las pruebas 'tda':
 
 472 bytes no fueron liberados al finalizar la ejecución del programa y aún se conservan referencias a estos. 
 1505 bytes se perdieron ya que al finalizar el programa no fueron liberados y no se conservan referencias a estos, por lo que no podrían liberarse.
+**Estaría bueno aclarar por qué se deben estos leaks (files no cerrados, mallocs no liberados)**
 
 #### Caso Long Filename
 
 ![Ejecución con Valgrind](img/paso4-long-filename.PNG)
 
-Para las pruebas 'long_filename' 	el programa cortó su ejecución ya que se encontró con un buffer overflow. Usando strcpy se evitaría el problema de buffer overflow, pero de igual manera la ejecución del programa habría encontrado un error al no hallar el archivo. 
+Para las pruebas 'long_filename' 	el programa cortó su ejecución ya que se encontró con un buffer overflow. Usando str**n**cpy se evitaría el problema de buffer overflow, pero de igual manera la ejecución del programa habría encontrado un error al no hallar el archivo. 
+**strncpy no necesariamente hubiera solucionado el problema, qué le pasarías como el parámetro length a strncpy?
+dependiendo de la respuesta el problema persiste o no.**
 
 Un segmentation fault ocurre cuando se intenta acceder a un bloque de memoria para el cual no se tiene permiso.
-Buffer overflow es la escritura de datos en bloques de memoria adyacentes al destino original debido a una falta de chequeo de los límites correctos. 
+Buffer overflow es la escritura **(o lectura)** de datos en bloques de memoria adyacentes al destino original debido a una falta de chequeo de los límites correctos. 
 
 ## Paso 5: SERCOM - Código de retorno y salida estándar
 
